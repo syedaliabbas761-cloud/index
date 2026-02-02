@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nando’s Invite</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffcad4, #ffe6eb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  #card {
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 26px;
+    line-height: 1.4;
+  }
+
+  .button-box {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 30px auto 0;
+  }
+
+  button {
+    padding: 14px 28px;
+    font-size: 17px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  #yesBtn {
+    background: #ff4d6d;
+    color: white;
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  #noBtn {
+    background: #d3d3d3;
+    position: absolute;
+    left: 50%;
+    top: 120px;
+    transform: translateX(-50%);
+    z-index: 5;
+  }
+
+  #result {
+    display: none;
+  }
+
+  img {
+    width: 280px;
+    max-width: 90%;
+    border-radius: 14px;
+    margin-top: 20px;
+  }
+
+  .fallback {
+    font-size: 80px;
+    animation: dance 0.8s infinite alternate ease-in-out;
+  }
+
+  @keyframes dance {
+    from { transform: rotate(-10deg) scale(1); }
+    to { transform: rotate(10deg) scale(1.15); }
+  }
+
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #a1002f;
+    margin-top: 16px;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="card">
+
+  <div id="question">
+    <h1>
+      Kaynat,<br>
+      would you be interested in<br>
+      eating Nando’s with me? 🍗❤️
+    </h1>
+
+    <div class="button-box" id="box">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
+
+  <div id="result">
+    <img
+      src="https://media.tenor.com/8Gf9jW6JZkMAAAAC/happy-dance-man.gif"
+      alt="Happy dance"
+      onerror="this.style.display='none'; document.getElementById('fallback').style.display='block';">
+
+    <div id="fallback" class="fallback" style="display:none;">🕺🎉🕺</div>
+
+    <p>
+      I knew you’d say yes 😉<br>
+      I’ve already booked the reservation at Nando’s ❤️
+    </p>
+  </div>
+
+</div>
+
+<script>
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const box = document.getElementById("box");
+  const question = document.getElementById("question");
+  const result = document.getElementById("result");
+
+  const noTexts = [
+    "Are you sure?",
+    "Are you certain?",
+    "Absolutely sure?",
+    "Like… really sure?",
+    "Still no?"
+  ];
+
+  let noIndex = 0;
+
+  function moveAndChangeNo() {
+    const boxRect = box.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+
+    const padding = 20;
+
+    const maxX = boxRect.width - btnRect.width - padding;
+    const maxY = boxRect.height - btnRect.height - padding;
+
+    let x, y;
+
+    // Push it AWAY from the YES button (upper center)
+    if (Math.random() > 0.5) {
+      x = Math.random() * maxX;
+      y = Math.random() * (maxY / 2) + maxY / 2;
+    } else {
+      x = Math.random() * maxX;
+      y = Math.random() * maxY;
+    }
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+    noBtn.style.transform = "none";
+
+    noBtn.textContent = noTexts[noIndex];
+    noIndex = (noIndex + 1) % noTexts.length;
+  }
+
+  // ONLY intentional interactions
+  noBtn.addEventListener("click", moveAndChangeNo);
+  noBtn.addEventListener("touchend", moveAndChangeNo);
+
+  yesBtn.addEventListener("click", () => {
+    question.style.display = "none";
+    result.style.display = "block";
+  });
+</script>
+
+</body>
+</html>
